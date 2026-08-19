@@ -1,0 +1,29 @@
+# Environment variables
+.env
+
+# Backup files
+backups/
+*.zip
+
+# Cloned repository
+repo/
+
+# Test files
+test.py
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~

@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  mealie-backup:
+    # Option 1: Build locally
+    build: .
+    
+    # Option 2: Use pre-built image from GitHub Container Registry
+    # Uncomment the line below and comment out 'build: .' above
+    # image: ghcr.io/YOUR_USERNAME/mealie-backup:latest
+    
+    container_name: mealie-backup
+    restart: unless-stopped
+    
+    environment:
+      # Cron schedule (uses timezone specified by TZ variable)
+      # Examples:
+      #   "0 2 * * *"     - Daily at 2 AM
+      #   "0 */6 * * *"   - Every 6 hours
+      #   "0 0 * * 0"     - Weekly on Sunday at midnight
+      #   "*/30 * * * *"  - Every 30 minutes (testing)
+      CRON_SCHEDULE: "${CRON_SCHEDULE:-0 2 * * *}"
+      
+      # Run backup immediately on container start
+      RUN_ON_STARTUP: "${RUN_ON_STARTUP:-false}"
+      
+      # Timezone (e.g., "America/New_York", "Europe/London", "UTC")
+      TZ: "${TZ:-UTC}"
+      
+      # Mealie instance credentials
+      MEALIE_URL: "${MEALIE_URL}"
+      API_TOKEN: "${API_TOKEN}"
+      
+      # GitHub repository credentials
+      GITHUB_BACKUP_REPO: "${GITHUB_BACKUP_REPO}"
+      GITHUB_USERNAME: "${GITHUB_USERNAME}"
+      GITHUB_PAT: "${GITHUB_PAT}"
+    
+    volumes:
+      # Mount logs directory to persist logs on host
+      - ./logs:/app/logs
+    
+    # Healthcheck to ensure cron is running
+    healthcheck:
+      test: ["CMD", "pgrep", "cron"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
