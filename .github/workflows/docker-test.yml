@@ -1,0 +1,35 @@
+name: Test Docker Build
+
+on:
+  pull_request:
+    paths:
+      - 'Dockerfile'
+      - 'main.py'
+      - 'requirements.txt'
+      - 'entrypoint.sh'
+      - '.github/workflows/docker-*.yml'
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build Docker image (test only)
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: mealiebackup:test
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Test Docker image
+        run: |
+          docker run --rm mealiebackup:test bw --version
+          docker run --rm mealiebackup:test python --version
