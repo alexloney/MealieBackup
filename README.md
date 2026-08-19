@@ -9,6 +9,10 @@ Automated backup script for Mealie that pushes backups to GitHub.
 - Automatically commits and pushes backups to a GitHub repository
 - Uses environment variables for secure credential management
 - Docker container with cron scheduling for automated backups
+- Automatic retry logic with exponential backoff for network resilience
+- ZIP file validation to ensure backup integrity
+- Handles "no changes" case when backup is identical to previous version
+- Robust error handling with detailed logging
 
 ## Setup
 

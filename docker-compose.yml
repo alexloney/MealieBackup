@@ -36,10 +36,6 @@ services:
       GITHUB_USERNAME: "${GITHUB_USERNAME}"
       GITHUB_PAT: "${GITHUB_PAT}"
     
-    volumes:
-      # Mount logs directory to persist logs on host
-      - ./logs:/app/logs
-    
     # Healthcheck to ensure cron is running
     healthcheck:
       test: ["CMD", "pgrep", "cron"]

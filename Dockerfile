@@ -26,12 +26,8 @@ COPY entrypoint.sh /entrypoint.sh
 # Make entrypoint executable
 RUN chmod +x /entrypoint.sh
 
-# Create logs directory
-RUN mkdir -p /app/logs
-
 # Set environment variables with defaults
 ENV CRON_SCHEDULE="0 2 * * *"
-ENV SKIP_CONFIRMATION="true"
 ENV RUN_ON_STARTUP="false"
 ENV TZ="UTC"
 
